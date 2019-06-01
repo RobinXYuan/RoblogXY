@@ -77,7 +77,7 @@ class User(UserMixin, db.Model):
     last_visit = db.Column(db.DateTime(), default=datetime.utcnow)
     avatar_hash = db.Column(db.String(32))
 
-    role_id = db.Column(db.Integer(), db.ForeignKey('roles.id'))
+    role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
 
     @property
     def password(self):
