@@ -71,13 +71,13 @@ class User(UserMixin, db.Model):
     username = db.Column(db.String(64))
     password_hash = db.Column(db.String(128))
     name = db.Column(db.String(64))
-    location = db.Column(db.String(255))
+    location = db.Column(db.String(256))
     about_me = db.Column(db.Text())
     join_time = db.Column(db.DateTime(), default=datetime.utcnow)
     last_visit = db.Column(db.DateTime(), default=datetime.utcnow)
     avatar_hash = db.Column(db.String(32))
 
-    role = db.Column(db.Integer(), db.ForeignKey('roles.id'))
+    role_id = db.Column(db.Integer(), db.ForeignKey('roles.id'))
 
     @property
     def password(self):
@@ -126,7 +126,7 @@ class User(UserMixin, db.Model):
                     url=url, hash=hash, size=size, default=default, rating=rating)
 
     def __repr__(self):
-        return '<User %r>' % self.email
+        return '<User {}>'.format(self.email)
 
 
 class AnonymousUser(AnonymousUserMixin):

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{% block title %}RoblogXY{% endblock %}</title>
+    {% block styles %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/uikit.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/uikit-rtl.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    {% endblock %}
+</head>
+<body>
+    <header>
+        <div uk-sticky="sel-target: .uk-navbar-container; cls-active: uk-navbar-sticky; bottom: #transparent-sticky-navbar">
+            <nav class="uk-navbar-container" uk-navbar style="position: relative; z-index: 980;">
+                <div class="uk-navbar-left nav-left-bar">
+                    <ul class="uk-navbar-nav">
+                        <span class="uk-navbar-item uk-logo" href="#">RoblogXY</span>
+                        <li class="uk-active">
+                            <a href="{{ url_for('main.index') }}">Home</a>
+                        </li>
+                        <li>
+                            <a href="#">Categories</a>
+                        </li>
+                        <li>
+                            <a href="#">Posts</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="uk-navbar-right nav-right-bar">
+                     <div class="uk-navbar-item">
+                        <form action="javascript:void(0)">
+                            <input class="uk-input uk-form-width-small" type="text" placeholder="Input">
+                            <button class="uk-button uk-button-default nav-button-search">
+                                <span uk-icon="icon: search"></span>
+                            </button>
+                        </form>
+                    </div>
+                    {% if current_user.is_authenticated %}
+                    <ul class="uk-navbar-nav">
+                        <li>
+                            <a href="#">Parent</a>
+                            <div class="uk-navbar-dropdown">
+                                <ul class="uk-nav uk-navbar-dropdown-nav">
+                                    <li class="uk-active"><a href="#">Active</a></li>
+                                    <li><a href="#">Item</a></li>
+                                    <li class="uk-nav-header">Header</li>
+                                    <li><a href="#">Item</a></li>
+                                    <li><a href="#">Item</a></li>
+                                    <li class="uk-nav-divider"></li>
+                                    <li><a href="#">Item</a></li>
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                    {% else %}
+                    <ul class="uk-navbar-nav">
+                        <li><a href="{{ url_for('auth.login') }}">Sign In</a></li>
+                    </ul>
+                    {% endif %}
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+    {% block content %}
+    {% endblock %}
+    </main>
+    
+    <footer>
+        <div class="uk-section uk-section-muted">
+            <div class="uk-flex uk-flex-center">
+                POWER BY ROBIN.X.YUAN
+            </div>
+        </div>
+    </footer>
+    {% block scripts %}
+    <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/uikit.min.js') }}"></script>    
+    <script src="{{ url_for('static', filename='js/uikit-icons.min.js') }}"></script>    
+    <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+    {% endblock %}  
+</body>
+</html>

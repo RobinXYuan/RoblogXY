@@ -1,0 +1,33 @@
+body {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+main {
+    flex: 1;
+}
+
+.nav-left-bar {
+    margin-left: 30px;
+}
+
+.nav-right-bar {
+    margin-right: 30px;
+}
+
+.nav-button-search {
+    padding: 0 10px;
+}
+
+.m-input {
+    width: 100%!important;
+}
+
+.m-input input {
+    width: inherit;
+}
+
+.main-content {
+    height: 100%;
+}

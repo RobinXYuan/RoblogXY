@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{% block title %}RoblogXY{% endblock %}</title>
+    {% block styles %}
+    <link rel="stylesheet" href="{{ url_for('admin.static', filename='css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('admin.static', filename='css/styles.css') }}">
+    {% endblock %}
+</head>
+<body>
+
+    {# Navbar #}
+    <nav>
+        
+    </nav>
+
+    {% block content %}
+    {% endblock %}
+
+    {% block scripts %}
+    <script src="{{ url_for('admin.static', filename='js/jquery.min.js') }}"></script>
+    <script src="{{ url_for('admin.static', filename='js/vue.min.js') }}"></script>    
+    <script src="{{ url_for('admin.static', filename='js/bootstrap.min.js') }}"></script>    
+    <script src="{{ url_for('admin.static', filename='js/scripts.js') }}"></script>
+    {% endblock %}
+</body>
+</html>

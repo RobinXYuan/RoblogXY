@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    RoblogXY - Sign In
+{% endblock %}
+
+{% block content %}
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        {% for message in messages %}
+        <div class="class=uk-alert-primary" uk-alert>
+            <a class="uk-alert-close" uk-close></a>
+            {{ message }}
+        </div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+<div class="uk-section uk-section-default uk-width-1-1" style="margin:0; height: 100%;">
+    <div class="uk-content uk-flex-middle uk-flex-center main-content" style="margin: 0; height: 100%;" uk-grid>
+        <div style="width: 70%;" class="uk-card uk-card-default uk-card-body uk-child-width-expand"  uk-grid>
+            <div class="uk-width-3-5 uk-flex uk-flex-center" uk-grid>
+                <form style="width:100%;" method="POST" action="{{ url_for('auth.login') }}" class="uk-form-stacked">
+                    {{ form.csrf_token }}
+                    <legend class="uk-legend">Sign In</legend>
+                    <div class="uk-margin">
+                        <label class="uk-form-label" for="user-email">{{ form.email.label }}</label>
+                        <div class="uk-inline m-input">
+                            <span class="uk-form-icon" uk-icon="icon: user"></span>
+                            {{ form.email(class_='uk-input uk-form-width-large', id="user-email") }}
+                        </div>
+                    </div>
+                    <div class="uk-margin">
+                        <label class="uk-form-label" for="user-password">{{ form.password.label }}</label>
+                        <div class="uk-inline m-input">
+                            <span class="uk-form-icon" uk-icon="icon: lock"></span>
+                            {{ form.password(class_='uk-input uk-form-width-large', id="user-password") }}
+                        </div>
+                    </div>
+                    <div class="uk-margin">
+                        <label class="uk-form-label" for="remember-me">
+                            {{ form.remember_me(class_='uk-checkbox', id="remember-me") }}
+                            {{ form.remember_me.label }}
+                        </label>
+                    </div>
+                    <div class="uk-margin uk-margin-medium-top">
+                        <div class="uk-flex uk-flex-center@m uk-flex-right@l">
+                            {{ form.submit(class_="uk-button uk-button-primary uk-width-1-1") }}
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div style="width:5%;" class="uk-width-1-5 uk-flex-center">
+                <div style="height:80%; margin:0; margin-top: 3em;" class="uk-divider-vertical"></div>
+            </div>
+            <div class="uk-flex-middle" uk-grid>
+                <div class="uk-flex-center uk-width-1-1">
+                    <a  href="{{ url_for('auth.register') }}"
+                        style="width:100%; background-color: lightgrey;"
+                        class="uk-button uk-button-default uk-width-1-1">
+                        SIGN UP
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

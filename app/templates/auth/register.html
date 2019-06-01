@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    RoblogXY - Sign Up
+{% endblock %}
+
+{% block content %}
+<div class="uk-section uk-section-default uk-width-1-1" style="margin:0; height: 100%;">
+    <div class="uk-content uk-flex-middle uk-flex-center main-content" style="margin: 0; height: 100%;" uk-grid>
+        <div style="width: 70%;" class="uk-card uk-card-default uk-card-body uk-child-width-expand"  uk-grid>
+            <div class="uk-flex-center" uk-grid>
+                <form style="width:100%;" class="uk-grid-medium" method="POST" action="{{ url_for('auth.register') }}" uk-grid>
+                    {{ form.csrf_token }}
+                    <legend class="uk-legend">Sign Up</legend>
+                    <div class="uk-width-1-2@s">
+                        <label class="uk-form-label" for="user-email">{{ form.email.label }}</label>
+                        <div class="uk-inline m-input">
+                            <span class="uk-form-icon" uk-icon="icon: user"></span>
+                            {{ form.email(class_='uk-input', id="user-email") }}
+                        </div>
+                    </div>
+                    <div class="uk-width-1-2@s">
+                        <label class="uk-form-label" for="user-username">{{ form.username.label }}</label>
+                        <div class="uk-inline m-input">
+                            <span class="uk-form-icon" uk-icon="icon: user"></span>
+                            {{ form.username(class_='uk-input', id="user-username") }}
+                        </div>
+                    </div>
+                    <div class="uk-width-1-1">
+                        <label class="uk-form-label" for="user-password">{{ form.password.label }}</label>
+                        <div class="uk-inline m-input">
+                            <span class="uk-form-icon" uk-icon="icon: lock"></span>
+                            {{ form.password(class_='uk-input', id="user-password") }}
+                        </div>
+                    </div>
+                    <div class="uk-width-1-1">
+                        <label class="uk-form-label" for="user-password2">{{ form.password2.label }}</label>
+                        <div class="uk-inline m-input">
+                            <span class="uk-form-icon" uk-icon="icon: lock"></span>
+                            {{ form.password2(class_='uk-input', id="user-password2") }}
+                        </div>
+                    </div>
+                    <div style="text-align:right;" class="uk-width-1-1">
+                        <a href="{{ url_for('auth.login') }}">Already a member? Go to login &gt;</a>
+                    </div>
+                    <div class="uk-margin-medium-top uk-width-1-1">
+                        <div class="uk-inline m-input">
+                            <span class="uk-form-icon" uk-icon="icon: lock"></span>
+                            {{ form.submit(class_='uk-button uk-button-primary', id="submit") }}
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
