@@ -15,7 +15,7 @@ class Category(db.Model):
 
     __tablename__ = 'categories'
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(64), unique=True)
+    name = db.Column(db.String(64), unique=True, index=True)
     level = db.Column(db.Enum(CategoryLevels))
     create_time = db.Column(db.DateTime(), default=datetime.utcnow)
 
@@ -23,7 +23,7 @@ class Category(db.Model):
 
     parent_id = db.Column(db.Integer, db.ForeignKey('categories.id'))
 
-    posts = db.repationship('Post', backref="category")
+    posts = db.relationship('Post', backref="category")
 
     def __repr__(self):
         return f"<Category {self.name} ({self.level})>"
@@ -34,8 +34,8 @@ class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(128))
     content_html = db.Column(db.Text)
-    create_time = db.Column(db.DateTime, default=datetime.utcnow)
-    update_time = db.Column(db.DateTime, default=datetime.utcnow)
+    create_time = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    update_time = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     is_recommend = db.Column(db.Boolean, default=False)
     is_public = db.Column(db.Boolean, default=True)
@@ -74,7 +74,7 @@ class Comment(db.Model):
     content = db.Column(db.String(2048))
     status = db.Column(db.Enum(CommentStatus))
     create_time = db.Column(db.DateTime, default=datetime.utcnow)
-    update_time = db.Column(db.DateTime, default=datetime.utcnow)
+    update_time = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
     post_id = db.Column(db.Integer, db.ForeignKey("posts.id"))

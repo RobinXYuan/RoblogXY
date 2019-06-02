@@ -18,7 +18,7 @@ def login():
             next = request.args.get('next')
             if next is None or next.startswith('/'):
                 next = url_for('main.index')
-            flash('Log in success!', MessageTypes.success)
+            flash('Log in success!')
             return redirect(next)
         flash('Invalid username or password.', MessageTypes.error)
     return render_template('auth/login.html', form=form)
