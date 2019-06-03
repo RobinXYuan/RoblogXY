@@ -18,6 +18,7 @@ flask-mail = "*"
 python-dotenv = "*"
 ipython = "*"
 flask-shell-ipython = "*"
+flask-admin = "*"
 
 [requires]
 python_version = "3.7"

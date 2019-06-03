@@ -1,13 +1,17 @@
 from flask import Flask, render_template
+from flask_admin import Admin
 from flask_bootstrap import Bootstrap
 from flask_login import LoginManager
 from flask_mail import Mail
 from flask_moment import Moment
 from flask_sqlalchemy import SQLAlchemy
+from flask_admin.contrib.sqla import ModelView
 
 from config import config
 
 
+admin = Admin(
+            name="RoblogXY Admin")
 bootstrap = Bootstrap()
 login_manager = LoginManager()
 login_manager.login_view = 'auth.login'
@@ -17,10 +21,13 @@ db = SQLAlchemy()
 
 
 def create_app(config_name):
+    from . import base_admin_views
+
     app = Flask(__name__)
     app.config.from_object(config[config_name])
     config[config_name].init_app(app)
 
+    admin.init_app(app, index_view=base_admin_views.CustomAdminIndexView())
     bootstrap.init_app(app)
     login_manager.init_app(app)
     mail.init_app(app)
@@ -33,7 +40,6 @@ def create_app(config_name):
     from .main import main as main_blueprint
     app.register_blueprint(main_blueprint)
 
-    from .admin import admin as admin_blueprint
-    app.register_blueprint(admin_blueprint, url_prefix="/admin")
-
     return app
+
+from .admin_views import *

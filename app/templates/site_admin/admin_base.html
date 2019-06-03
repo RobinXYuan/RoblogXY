@@ -1,3 +1,5 @@
+{% import 'site_admin/admin_sidebar.html' as layout with context %}
+{% import 'admin/static.html' as admin_static with context %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,9 +9,9 @@
     <title>{% block title %}RoblogXY{% endblock %}</title>
     {% block styles %}
         <link rel="stylesheet" href="{{ url_for('static', filename='css/font-awesome.min.css') }}">
-        <link rel="stylesheet" href="{{ url_for('admin.static', filename='css/admin.css') }}">
-        <link rel="stylesheet" href="{{ url_for('admin.static', filename='css/bootstrap.min.css') }}">
-        <link rel="stylesheet" href="{{ url_for('admin.static', filename='css/styles.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='admin/css/admin.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='admin/css/bootstrap.min.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='admin/css/styles.css') }}">
     {% endblock %}
 </head>
 <body>
@@ -17,7 +19,7 @@
     <nav class="navbar sticky-top navbar-expand-lg navbar-light bg-light ml-auto ml-md-0">
         <a class="navbar-brand" href="#">
             <img src="/docs/4.3/assets/brand/bootstrap-solid.svg" width="30" height="30" class="d-inline-block align-top" alt="">
-            {{ site_title }}
+            <span style="margin-left:10px;">{{ admin_view.admin.name|upper }}</span>
         </a>
         <button class="btn btn-link btn-sm text-dark order-1 order-sm-0" id="sidebarToggle" href="#">
             <i class="fas fa-bars"></i>
@@ -39,7 +41,7 @@
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                     <a class="dropdown-item" href="#">Account</a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">Logout</a>
+                    <a class="dropdown-item" href="{{ url_for('admin.logout') }}">Logout</a>
                 </div>
             </span>
         </div>
@@ -49,43 +51,35 @@
 
     <!-- Sidebar -->
     <ul class="sidebar navbar-nav">
-      <li class="nav-item active">
-        <a class="nav-link" href="{{ url_for('admin.index') }}">
-          <i class="fas fa-fw fa-home"></i>
-          <span>Home</span>
-        </a>
-      </li>
-      {% for blp_name, m_list in sidebar_items.items() %}
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <i class="far fa-fw fa-circle"></i>
-            <span>{{ blp_name }}</span>
-          </a>
-          <div class="dropdown-menu" aria-labelledby="pagesDropdown">
-            {% for item in m_list %}
-              <a class="dropdown-item" href="{{ item.url }}">
-                <i class="far fa-fw fa-circle"></i>
-                <span>{{ item.name }}</span>
-              </a>
-            {% endfor %}
-          </div>
-        </li>
-      {% endfor %}
+        {{ layout.menu() }}
     </ul>
 
     <div id="content-wrapper">
       <div class="container-fluid">
+        {{ layout.messages() }}
 
-        <!-- List Operation Bar -->
-        <div class="list-op-bar navbar navbar-light bg-light ml-auto ml-md-0">
-          <a href="" class="btn btn-primary">
-            <i class="fas fa-fw fa-plus"></i>
-            Add 
-          </a>
-        </div>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
 
-        {% block content %}
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                </ul>
+                    
+                    {# {% if admin_view.create_modal %} #}
 
+                    {% if admin_view.can_create %}
+                        <a href="{{ get_url('.create_view', url=return_url) }}" class="btn btn-primary my-2 my-sm-0">
+                            <i class="fa fa-fw fa-plus"></i>
+                            Add {{ admin_view.name }}
+                        </a>
+                    {% endif %}
+            </div>
+        </nav>
+
+        <hr>
+        
+        {% set render_ctx = h.resolve_ctx() %}
+
+        {% block body %}
         {% endblock %}
 
       </div>
@@ -95,7 +89,7 @@
       <footer class="sticky-footer">
         <div class="container my-auto">
           <div class="copyright text-center my-auto">
-            <span>{{ site_footer }}</span>
+            <span>{{ admin_view.site_footer }}</span>
           </div>
         </div>
       </footer>
@@ -106,14 +100,12 @@
   </div>
 
     {% block scripts %}
-    <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
-    <script src="{{ url_for('admin.static', filename='js/bootstrap.bundle.min.js') }}"></script>
-
-    <script src="{{ url_for('admin.static', filename='js/jquery.easing.min.js') }}"></script>
-    <script src="{{ url_for('admin.static', filename='js/vue.min.js') }}"></script>   
-    <!-- <script src="{{ url_for('static', filename='js/font-awesome.min.js') }}"></script> -->
-    <script src="{{ url_for('admin.static', filename='js/admin.min.js') }}"></script>   
-    <script src="{{ url_for('admin.static', filename='js/scripts.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='admin/js/bootstrap.bundle.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='admin/js/jquery.easing.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='admin/js/vue.min.js') }}"></script>   
+    <script type="text/javascript" src="{{ url_for('static', filename='admin/js/admin.min.js') }}"></script>   
+    <script type="text/javascript" src="{{ url_for('static', filename='admin/js/scripts.js') }}"></script>
     {% endblock %}
 </body>
 </html>

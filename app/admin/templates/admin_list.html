@@ -1,0 +1,7 @@
+{% extends 'admin_base.html' %}
+
+{% block content %}
+    {% for object in objects %}
+        {{ object.name }}
+    {% endfor %}
+{% endblock %}

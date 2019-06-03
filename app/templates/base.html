@@ -78,10 +78,10 @@
         </div>
     </footer>
     {% block scripts %}
-    <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/uikit.min.js') }}"></script>    
-    <script src="{{ url_for('static', filename='js/uikit-icons.min.js') }}"></script>    
-    <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/uikit.min.js') }}"></script>    
+    <script type="text/javascript" src="{{ url_for('static', filename='js/uikit-icons.min.js') }}"></script>    
+    <script type="text/javascript" src="{{ url_for('static', filename='js/scripts.js') }}"></script>
     {% endblock %}  
 </body>
 </html>
