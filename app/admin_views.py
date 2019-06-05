@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from flask_admin import expose
 from flask_admin.contrib.sqla import ModelView
 
@@ -18,7 +20,7 @@ class UserAdminView(CustomBaseView):
 
 admin.add_view(UserAdminView(
             User, db.session, name="User", endpoint="user",
-            menu_icon_type="fa", menu_icon_value="far fa-fw fa-user",
+            menu_icon_type="fa", menu_icon_value="fa fa-fw fa-user",
             category="Auth"))
 
 class RoleAdminView(CustomBaseView):
@@ -30,7 +32,6 @@ admin.add_view(RoleAdminView(
             menu_icon_type="fa", menu_icon_value="fa fa-fw fa-user-tag",
             category="Auth"))
 
-
 # MAIN BLURPRINT
 class CategoryAdminView(CustomBaseView):
 
@@ -40,6 +41,7 @@ class CategoryAdminView(CustomBaseView):
     column_default_sort = 'id'
     column_details_exclude_list = ['create_time']
     column_filters = ['name']
+    column_searchable_list = ['name', ]
 
 admin.add_view(CategoryAdminView(
             Category, db.session, name="Category", endpoint="category",

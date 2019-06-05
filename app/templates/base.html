@@ -17,7 +17,11 @@
             <nav class="uk-navbar-container" uk-navbar style="position: relative; z-index: 980;">
                 <div class="uk-navbar-left nav-left-bar">
                     <ul class="uk-navbar-nav">
-                        <span class="uk-navbar-item uk-logo" href="#">RoblogXY</span>
+                        <li class="uk-navbar-item">
+                            <img style="width:3.8em;height:3.8em;border-radius:50%;"
+                                src="{{ url_for('static', filename='images/logo.png') }}">
+                        </li>
+                        <span class="uk-navbar-item uk-logo" style="margin-left: -.5em;">RoblogXY</span>
                         <li class="uk-active">
                             <a href="{{ url_for('main.index') }}">Home</a>
                         </li>
@@ -41,16 +45,17 @@
                     {% if current_user.is_authenticated %}
                     <ul class="uk-navbar-nav">
                         <li>
-                            <a href="#">Parent</a>
+                            <a href="#">{{ current_user.username }}</a>
                             <div class="uk-navbar-dropdown">
                                 <ul class="uk-nav uk-navbar-dropdown-nav">
-                                    <li class="uk-active"><a href="#">Active</a></li>
-                                    <li><a href="#">Item</a></li>
-                                    <li class="uk-nav-header">Header</li>
-                                    <li><a href="#">Item</a></li>
-                                    <li><a href="#">Item</a></li>
+                                    <li class="uk-nav-header">Account</li>
+                                    <li><a href="#">My Account</a></li>
+                                    <li><a href="#">Liked Posts</a></li>
+                                    <li class="uk-nav-header">Links</li>
+                                    <li><a href="#">Feedback</a></li>
+                                    <li><a href="#">View on Github</a></li>
                                     <li class="uk-nav-divider"></li>
-                                    <li><a href="#">Item</a></li>
+                                    <li><a href="#">Logout</a></li>
                                 </ul>
                             </div>
                         </li>
@@ -73,7 +78,7 @@
     <footer>
         <div class="uk-section uk-section-muted">
             <div class="uk-flex uk-flex-center">
-                POWER BY ROBIN.X.YUAN
+                POWER BY XIAORONG YUAN 2019 - 2020
             </div>
         </div>
     </footer>

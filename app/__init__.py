@@ -11,7 +11,12 @@ from config import config
 
 
 admin = Admin(
-            name="RoblogXY Admin")
+    name="RoblogXY Admin",
+    category_icon_classes={
+        'Auth': 'fa fa-fw fa-user-secret',
+        'Main': 'fas fa-fw fa-dharmachakra'
+    }
+)
 bootstrap = Bootstrap()
 login_manager = LoginManager()
 login_manager.login_view = 'auth.login'
@@ -21,13 +26,15 @@ db = SQLAlchemy()
 
 
 def create_app(config_name):
-    from . import base_admin_views
+    from .base_admin_views import CustomAdminIndexView
 
     app = Flask(__name__)
     app.config.from_object(config[config_name])
     config[config_name].init_app(app)
 
-    admin.init_app(app, index_view=base_admin_views.CustomAdminIndexView())
+    admin.init_app(app, index_view=CustomAdminIndexView(
+        menu_icon_type="fa",
+        menu_icon_value="fa fa-fw fa-home"))
     bootstrap.init_app(app)
     login_manager.init_app(app)
     mail.init_app(app)

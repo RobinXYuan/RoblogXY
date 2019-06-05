@@ -25,3 +25,95 @@
     left: 0;
     border: none;
 }
+.table-option-bar {
+  background-color: aliceblue;
+}
+
+.card-table {
+  margin: auto 15px;
+}
+
+.table-responsive {
+  padding: 0;
+  margin: 0;
+}
+
+.list-checkbox-column {
+    width: 14px;
+}
+
+/* .list-buttons-column {
+  border: 0;
+} */
+
+.card-body .table-responsive .table a.icon span {
+    color: darkgrey;
+}
+
+.card-body .table-responsive .table form.icon {
+    display: inline;
+}
+
+.card-body .table-responsive .table form.icon button {
+    border: none;
+    background: transparent;
+    text-decoration: none;
+    padding: 0;
+    padding-bottom: .25em;
+    color: darkgrey;
+}
+
+.card-body .table-responsive .table.icon:first-child {
+    margin-left: 10px;
+}
+
+/* List View Inline Filters */
+table.filters {
+    border-collapse: collapse;
+    border-spacing: 4px;
+}
+
+/* prevents gap between table and actions while there are no filters set */
+table.filters:not(:empty) {
+    margin: 12px 0px 20px 5px;
+}
+
+/* spacing between filter X button, operation, and value field */
+/* uses tables instead of form classes for bootstrap2-3 compatibility */
+table.filters tr td {
+    padding-right: 10px;
+    padding-bottom: 3px;
+}
+
+/* Filters - Select2 Boxes */
+.filters .filter-op {
+    width: 150px;
+}
+
+.filters .filter-op .select2-choice {
+    height: 38px;
+}
+
+#filter_form button {
+  margin: 0 10px;
+}
+
+.filters .filter-val {
+    width: 220px;
+}
+
+/* 
+.table-option-bar .nav-item.dropdown .dropdown-toggle::after {
+  width: 1rem;
+  text-align: center;
+  float: right;
+  vertical-align: 0;
+  border: 0;
+  font-weight: 900;
+  content: '\2022';
+  font-family: 'Font Awesome 5 Free';
+}
+
+.table-option-bar .nav-item.dropdown.show .dropdown-toggle::after {
+  content: '\2024';
+} */

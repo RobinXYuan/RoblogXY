@@ -1,0 +1,203 @@
+{% import 'site_admin/admin_sidebar.html' as layout with context %}
+{% import 'site_admin/admin_lib.html' as lib with context %}
+{% import 'site_admin/admin_actions.html' as actionlib with context %}
+{% import 'site_admin/admin_op_bar_layout.html' as opbar_layout with context %}
+{% import 'site_admin/admin_table_row_actions.html' as row_actions with context %}
+{% extends 'site_admin/admin_base.html' %}
+
+{% block styles %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static', filename='admin/css/select2.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='admin/css/select2-bootstrap3.css') }}">
+{% endblock styles %}
+
+{% block list_nav %}
+<nav class="table-option-bar navbar navbar-expand-lg navbar-light bg-light">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="javascript:void(0)">
+                    {{ _gettext('List') }}{% if count %} ({{ count }}){% endif %}
+                    <span class="sr-only">(current)</span>
+                </a>
+            </li>
+            {% if filters %}
+            <li class="dropdown">
+                {{ opbar_layout.filter_options(btn_class='nav-link dropdown-toggle') }}
+            </li>
+            {% endif %}
+            {% if can_set_page_size %}
+            <li class="dropdown">
+                {{ opbar_layout.page_size_form(page_size_url, btn_class='nav-link dropdown-toggle') }}
+            </li>
+            {% endif %}
+            {% if admin_view.can_export %}
+                {{ opbar_layout.export_options(btn_class='nav-link dropdown-toggle') }}
+            {% endif %}
+            {% if actions %}
+            <li class="dropdown">
+                {{ actionlib.dropdown(actions, btn_class='nav-link dropdown-toggle') }}
+            </li>
+            {% endif %}
+        </ul>
+        {# {% if admin_view.create_modal %} #}
+
+        {% if search_supported %}
+            {{ opbar_layout.search_form() }}
+        {% endif %}
+
+        {% if admin_view.can_create %}
+            <a href="{{ get_url('.create_view', url=return_url) }}" class="btn btn-primary my-2 my-sm-0">
+                <i class="fa fa-fw fa-plus"></i>
+                Add {{ admin_view.name }}
+            </a>
+        {% endif %}
+    </div>
+</nav>
+
+<div class="container-fluid">
+<div class="row">
+{% if filters %}
+    {{ opbar_layout.filter_form() }}
+    <div class="clearfix"></div>
+{% endif %}
+</div>
+</div>
+<hr>
+{% endblock %}
+
+{% block content %}
+    <div class="card mb-3 card-table">
+        <div class="card-header">
+            <h5>
+                <!-- <i class="fas fa-table"></i> -->
+                <i class="{{ admin_view.menu_icon_value }}"></i>
+                Blueprint {{ admin_view.name|upper }}
+            </h5>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            {% if actions %}
+                            <th class="list-checkbox-column">
+                                <input type="checkbox" name="rowtoggle" class="action-rowtoggle" title="{{ _gettext('Select all records') }}" />
+                            </th>
+                            {% endif %}
+                            {% for c, name in list_columns %}
+                                {% set column = loop.index0 %}
+                                <th class="column-header col-{{c}}">
+                                    {% if admin_view.is_sortable(c) %}
+                                        {% if sort_column == column %}
+                                            <a href="{{ sort_url(column, True) }}" title="{{ _gettext('Sort by %(name)s', name=name) }}">
+                                                {{ name }}
+                                                {% if sort_desc %}
+                                                    <span class="fa fa-chevron-up glyphicon glyphicon-chevron-up"></span>
+                                                {% else %}
+                                                    <span class="fa fa-chevron-down glyphicon glyphicon-chevron-down"></span>
+                                                {% endif %}
+                                            </a>
+                                        {% else %}
+                                            <a href="{{ sort_url(column) }}" title="{{ _gettext('Sort by %(name)s', name=name) }}">{{ name }}</a>
+                                        {% endif %}
+                                    {% else %}
+                                        {{ name }}
+                                    {% endif %}
+                                    {% if admin_view.column_descriptions.get(c) %}
+                                        <a class="fa fa-question-circle glyphicon glyphicon-question-sign"
+                                        title="{{ admin_view.column_descriptions[c] }}"
+                                        href="javascript:void(0)" data-role="tooltip"
+                                        ></a>
+                                    {% endif %}
+                                </th>
+                            {% endfor %}
+                            {% if admin_view.column_display_actions %}
+                                <th class="col-md-1"> {{ _gettext('Operations') }} </th>
+                            {% endif %}
+                        </tr>
+                    </thead>
+                    {% for row in data %}
+                    <tr>
+                        {% if actions %}
+                        <td>
+                            <input type="checkbox" name="rowid" class="action-checkbox" value="{{ get_pk_value(row) }}" title="{{ _gettext('Select record') }}" />
+                        </td>
+                        {% endif %}
+                        {% for c, name in list_columns %}
+                        <td class="col-{{c}}">
+                        {% if admin_view.is_editable(c) %}
+                            {% set form = list_forms[get_pk_value(row)] %}
+                            {% if form.csrf_token %}
+                                {{ form[c](pk=get_pk_value(row), display_value=get_value(row, c), csrf=form.csrf_token._value()) }}
+                            {% else %}
+                                {{ form[c](pk=get_pk_value(row), display_value=get_value(row, c)) }}
+                            {% endif %}
+                        {% else %}
+                        {{ get_value(row, c) }}
+                        {% endif %}
+                        </td>
+                        {% endfor %}
+                        {% if admin_view.column_display_actions %}
+                        <td class="list-buttons-column">
+                            <div class="d-flex flex-2">
+                            {% for action in list_row_actions %}
+                                {{ action.render_ctx(get_pk_value(row), row) }}
+                            {% endfor %}
+                            </div>
+                        </td>
+                        {% endif %}
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="999">
+                            <div class="text-center">
+                                {{ admin_view.get_empty_list_message() }}
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </table>
+                <!-- <div class="row">
+                    <div class="col">
+                        <a href="" class="btn btn-danger">DELETE ALL</a>
+                    </div>
+                </div> -->
+            </div>
+            <nav aria-label="page navigation">
+                {% if num_pages is not none %}
+                    {{ lib.pager(page, num_pages, pager_url) }}
+                {% else %}
+                    {{ lib.simple_pager(page, data|length == page_size, pager_url) }}
+                {% endif %}
+            </nav>
+            {{ actionlib.form(actions, get_url('.action_view')) }}
+        </div>
+        <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+    </div>
+    {% block actions %}
+        {{ actionlib.form(actions, get_url('.action_view')) }}
+    {% endblock %}
+    {% if admin_view.edit_modal or admin_view.create_modal or admin_view.details_modal %}
+        {{ lib.add_modal_window() }}
+    {% endif %}
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+
+    {% if filter_groups %}
+      <div id="filter-groups-data" style="display:none;">{{ filter_groups|tojson|safe }}</div>
+      <div id="active-filters-data" style="display:none;">{{ active_filters|tojson|safe }}</div>
+    {% endif %}
+
+    <script type="text/javascript" src="{{ url_for('static', filename='admin/js/filters.js') }}"></script>
+    {{ lib.form_js() }}
+
+    {{ actionlib.script(_gettext('Please select at least one record.'),
+                        actions,
+                        actions_confirmation) }}
+{% endblock scripts %}

@@ -1,5 +1,5 @@
 {% import 'site_admin/admin_sidebar.html' as layout with context %}
-{% import 'admin/static.html' as admin_static with context %}
+{# {% import 'admin/static.html' as admin_static with context %} #}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -18,7 +18,7 @@
     {# Navbar #}
     <nav class="navbar sticky-top navbar-expand-lg navbar-light bg-light ml-auto ml-md-0">
         <a class="navbar-brand" href="#">
-            <img src="/docs/4.3/assets/brand/bootstrap-solid.svg" width="30" height="30" class="d-inline-block align-top" alt="">
+            <img src="{{ url_for('static', filename='images/logo.png') }}" width="30" height="30" class="d-inline-block align-top" alt="">
             <span style="margin-left:10px;">{{ admin_view.admin.name|upper }}</span>
         </a>
         <button class="btn btn-link btn-sm text-dark order-1 order-sm-0" id="sidebarToggle" href="#">
@@ -26,10 +26,6 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarText">
             <ul class="navbar-nav mr-auto"></ul>
-            <form class="form-inline">
-                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-            </form>
             <span class="nav-item dropdown">
                 <a class="nav-link" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     {% if current_user.username %}
@@ -57,29 +53,13 @@
     <div id="content-wrapper">
       <div class="container-fluid">
         {{ layout.messages() }}
-
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav mr-auto">
-                </ul>
-                    
-                    {# {% if admin_view.create_modal %} #}
-
-                    {% if admin_view.can_create %}
-                        <a href="{{ get_url('.create_view', url=return_url) }}" class="btn btn-primary my-2 my-sm-0">
-                            <i class="fa fa-fw fa-plus"></i>
-                            Add {{ admin_view.name }}
-                        </a>
-                    {% endif %}
-            </div>
-        </nav>
-
-        <hr>
-        
+        {# store the jinja2 context for form_rules rendering logic #}
         {% set render_ctx = h.resolve_ctx() %}
 
-        {% block body %}
+        {% block list_nav %}
+        {% endblock %}
+
+        {% block content %}
         {% endblock %}
 
       </div>
@@ -101,10 +81,12 @@
 
     {% block scripts %}
     <script type="text/javascript" src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/moment.min.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='admin/js/bootstrap.bundle.min.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='admin/js/jquery.easing.min.js') }}"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='admin/js/vue.min.js') }}"></script>   
-    <script type="text/javascript" src="{{ url_for('static', filename='admin/js/admin.min.js') }}"></script>   
+    <script type="text/javascript" src="{{ url_for('static', filename='admin/js/admin.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='admin/js/helpers.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='admin/js/select2/select2.min.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='admin/js/scripts.js') }}"></script>
     {% endblock %}
 </body>

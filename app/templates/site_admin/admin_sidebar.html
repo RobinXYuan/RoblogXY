@@ -25,9 +25,8 @@
             <a class="nav-link dropdown-toggle"
                 href="#" id="pagesDropdown" role="button"
                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                {% set icon = menu_icon(item) %}
-                {% if icon %}
-                    {{ menu_icon(item) }}
+                {% if item.get_class_name() %}
+                    <i class="{{ item.get_class_name() }}"></i>
                 {% else %}
                     <i class="far fa-fw"></i>
                 {% endif %}
@@ -52,10 +51,14 @@
         {% if item.is_accessible() and item.is_visible() %}
             <li class="nav-item {% if item.is_active(admin_view) %}active{% endif %}">
             <a class="nav-link" href="{{ item.get_url() }}">
-                {% if menu_icon(item) %}
-                    {{ menu_icon(item) }}
+                {% if item.name == 'Home' %}
+                    <i class="fa fa-fw fa-home"></i>
                 {% else %}
-                    <i class="far fa-fw"></i>
+                    {% if item.get_icon_value() %}
+                        <i class="{{ item.get_icon_value() }}"></i>
+                    {% else %}
+                        <i class="far fa-fw"></i>
+                    {% endif %}
                 {% endif %}
                 <span>{{ item.name }}</span>
             </a>

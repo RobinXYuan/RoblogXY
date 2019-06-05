@@ -19,6 +19,9 @@ python-dotenv = "*"
 ipython = "*"
 flask-shell-ipython = "*"
 flask-admin = "*"
+pandas = "*"
+tablib = "*"
+flask-babelex = "*"
 
 [requires]
 python_version = "3.7"
