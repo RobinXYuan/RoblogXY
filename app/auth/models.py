@@ -76,6 +76,7 @@ class User(UserMixin, db.Model):
     join_time = db.Column(db.DateTime(), default=datetime.utcnow)
     last_visit = db.Column(db.DateTime(), default=datetime.utcnow)
     avatar_hash = db.Column(db.String(32))
+    is_active = db.Column(db.Boolean, default=True)
 
     role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
 

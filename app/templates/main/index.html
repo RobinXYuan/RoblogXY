@@ -1,5 +1,161 @@
 {% extends 'base.html' %}
 
+{% block styles %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index-styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/font-awesome.min.css') }}">
+{% endblock styles %}
+
+{% block navexpand %}
+<!-- Welcome Section -->
+<div style="padding: 0;margin-top:-80px;" class="uk-section">
+    <div class="uk-height-large uk-background-cover uk-light uk-flex"
+        style="height:95vh; background-image:url('../../static/images/cover.png');">
+        <div class="uk-width-1-2@m uk-text-center uk-margin-auto uk-margin-auto-vertical">
+            <h1>
+                Welcome to RoblogXY
+            </h1>
+            <p>
+                I record my life and notes on this blog and share with you!
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock navexpand %}
+
 {% block content %}
-<h1>Welcome to RoblogXY!</h1>
+
+<!-- Self Introduction Section -->
+<section class="uk-section uk-section-muted">
+    <div class="uk-container self-intro"
+        uk-parallax="opacity: 0,1; y: 100,0; viewport: 0.3">
+        <div class="self-intro-basics uk-flex-center uk-flex-center">
+            <div class="self-intro-img"></div>
+            <div class="self-intro-message">
+                <table>
+                    <tr>
+                        <td>
+                            <i class="fa fa-fw fa-envelope"></i>
+                            <span><b>E-mail</b></span>
+                        </td>
+                        <td>
+                            <span>robinxyuan@yeah.net</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <i class="fab fa-fw fa-weixin"></i>
+                            <span><b>Wechat</b></span>
+                        </td>
+                        <td>
+                            <span>Yuanyxr</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <i class="fa fa-fw fa-calendar-alt"></i>
+                            <span><b>Birthday</b></span>
+                        </td>
+                        <td>
+                            <span>1994.07.14</span>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="self-intro-about">
+            <p>
+                我叫苑肖嵘，一名系统工程师。2016 年毕业于<b>上海理工大学</b>光电信息工程专业，2019 年毕业于<b>巴黎高等电子学院（ISEP）</b>无线通信及物联网专业。
+                本科加入超快光电子实验室，参与太赫兹癌细胞检测项目，负责试验数据测量、处理和相关算法编写，
+                期间申请专利数篇，并于 2016 年在 <i>Biomedical Optics Express</i> 杂志发表 
+                <a target="_blank" href="https://doi.org/10.1364/BOE.7.004472">论文一篇</a>。
+                后前往法国巴黎攻读研究生学位，研究生期间参与欧盟 H2020（Horizon 2020） 项目下属子项目 IoRL（Internet of Radio Light），
+                负责利用 Django、MySQL 搭建一套室内定位系统，并在 Android 和 iOS 两套系统上编写移动端应用。
+            </p>
+            <p>
+                I'm Xiaorong YUAN, a system engineer. Graduated from photo-electronic engineering of University of Shanghai 
+                for Seicence and Technology in 2016, and then finish my master degree of <i>Wireless Communication and IoT</i> 
+                of Institut Supérieur d'Electronique de Paris (ISEP) in 2019. I joined ultra-fast opto-electron laboratory during 
+                my undergraduated time, mainly in charge of testing examples and data analysis, in this period, I published a 
+                <a target="_blank" href="https://doi.org/10.1364/BOE.7.004472">paper</a> on 
+                <i>Biomedical Optics Express</i> of USA. When I study in ISEP, I participated in the IoRL project, a sub-project of 
+                Horizon 2020 Project of the EU, was mainly responsible for building a set of indoor positioning system using Django
+                and MySQL, and writing application on Android and iOS mobile system.
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- My Projects -->
+<section class="uk-section projects-section">
+    <h1 class="uk-text-center"><span>Personal Projects</span></h1>
+    <div class="container" style="padding:2em 6em;">
+        <div style="margin: 0;" class="uk-child-width-1-3@m uk-grid-large prj-section-grid" uk-grid>
+            <div>
+                <div class="uk-card uk-card-default">
+                    <div class="uk-card-media-top">
+                        <img src="{{ url_for('static', filename='images/cover.png') }}" alt="">
+                    </div>
+                    <div class="uk-card-body">
+                        <h3 class="uk-card-title" style="color: black;">Journaux</h3>
+                        <p>
+                            爬取学术期刊、文献信息，存入 PostgreSQL 数据库，利用 Django 搭建后台，
+                            提供信息聚合服务。
+                        </p>
+                    </div>
+                     <div class="uk-card-footer" >
+                        <a href="#" style="color: black;" class="uk-button uk-button-text">
+                            <i class="fab fa-github"></i>
+                            Github
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="uk-card uk-card-default">
+                    <div class="uk-card-media-top">
+                        <img src="{{ url_for('static', filename='images/cover.png') }}" alt="">
+                    </div>
+                    <div class="uk-card-body">
+                        <h3 class="uk-card-title" style="color: black;">Graphy</h3>
+                        <p>
+                            利用 Vue.js 搭建一个单页面数据绘图应用，利用 VUEX 管理状态，Char.js 绘制数据图表。
+                        </p>
+                    </div>
+                    <div class="uk-card-footer" >
+                        <a href="#" style="color: black;" class="uk-button uk-button-text">
+                            <i class="fab fa-github"></i>
+                            Github
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="uk-card uk-card-default">
+                    <div class="uk-card-media-top">
+                        <img src="{{ url_for('static', filename='images/cover.png') }}" alt="">
+                    </div>
+                    <div class="uk-card-body">
+                        <h3 class="uk-card-title" style="color: black;">More</h3>
+                        <p>
+                            
+                        </p>
+                    </div>
+                    <div class="uk-card-footer">
+                        <a href="#" style="color: black;" class="uk-button uk-button-text">
+                            <i class="fab fa-github"></i>
+                            Github
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="uk-text-center">
+        <a href="https://github.com/RobinXYuan" class="uk-button uk-button-primary">
+            <i class="fab fa-fw fa-github"></i>
+            Visit My Github
+        </a>
+    </div>
+</section>
 {% endblock %}

@@ -22,8 +22,13 @@ class Category(db.Model):
     is_nav = db.Column(db.Boolean, default=False)
 
     parent_id = db.Column(db.Integer, db.ForeignKey('categories.id'))
+    parent = db.relationship('Category', remote_side=[id])
+    
+    posts = db.relationship('Post', backref="category", lazy='dynamic')
 
-    posts = db.relationship('Post', backref="category")
+    @property
+    def children(self):
+        return Category.query.filter(Category.parent_id==self.id).all()
 
     def __repr__(self):
         return f"<Category {self.name} ({self.level})>"

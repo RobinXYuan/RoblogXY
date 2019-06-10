@@ -1,0 +1,39 @@
+{% import "site_admin/admin_lib.html" as lib with context %}
+{% from 'site_admin/admin_lib.html' import extra with context %}
+{% extends "site_admin/admin_base.html" %}
+
+{% block styles %}
+  {{ super() }}
+  <link rel="stylesheet" href="{{ url_for('static', filename='admin/css/select2-trans.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='admin/css/select2-bootstrap3.css') }}">
+  {{ lib.form_css() }}
+  <link rel="stylesheet" href="{{ url_for('static', filename='admin/css/form-styles.css') }}">
+{% endblock %}
+
+{% block list_nav %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="{{ url_for('admin.index') }}">Home</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="{{ return_url }}">{{ admin_view.name }} {{ _gettext('List') }}</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">
+                Create {{ admin_view.name }}
+            </li>
+        </ol>
+    </nav>
+{% endblock list_nav %}
+
+{% block content %}
+
+<div class="container-fluid">
+{{ lib.render_form(form, return_url, extra(), form_opts) }}
+</div>
+{% endblock %}
+
+{% block scripts %}
+  {{ super() }}
+  {{ lib.form_js() }}
+{% endblock %}

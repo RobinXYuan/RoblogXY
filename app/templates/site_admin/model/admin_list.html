@@ -1,8 +1,8 @@
 {% import 'site_admin/admin_sidebar.html' as layout with context %}
 {% import 'site_admin/admin_lib.html' as lib with context %}
 {% import 'site_admin/admin_actions.html' as actionlib with context %}
-{% import 'site_admin/admin_op_bar_layout.html' as opbar_layout with context %}
-{% import 'site_admin/admin_table_row_actions.html' as row_actions with context %}
+{% import 'site_admin/model/admin_op_bar_layout.html' as opbar_layout with context %}
+{% import 'site_admin/model/admin_table_row_actions.html' as row_actions with context %}
 {% extends 'site_admin/admin_base.html' %}
 
 {% block styles %}
@@ -12,6 +12,17 @@
 {% endblock styles %}
 
 {% block list_nav %}
+<nav aria-label="breadcrumb">
+    <ol style="background-color:whitesmoke;" class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="{{ url_for('admin.index') }}">Home</a>
+        </li>
+        <li class="breadcrumb-item active">
+            {{ admin_view.name }} {{ _gettext('List') }}
+        </li>
+    </ol>
+</nav>
+
 <nav class="table-option-bar navbar navbar-expand-lg navbar-light bg-light">
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>

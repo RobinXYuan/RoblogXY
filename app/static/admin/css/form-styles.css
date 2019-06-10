@@ -1,0 +1,19 @@
+.select2-choice {
+    height: 38px!important;
+    line-height: 38px!important;
+    background-image: none!important;
+    backdrop-filter: none;
+    background-color: transparent;
+}
+
+.select2-container .select2-choice .select2-arrow {
+    background-color: transparent;
+    padding-top: 6px;
+    width: 25px;
+    border-left: 0;
+    background-image: none;
+}
+
+.select2-container .select2-choice .select2-chosen {
+    padding: 0 12px;
+}

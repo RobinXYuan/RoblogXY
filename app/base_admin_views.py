@@ -45,14 +45,14 @@ class CustomAdminIndexView(AdminIndexView):
 class CustomBaseView(ModelView):
 
     list_template = "site_admin/model/admin_list.html"
-    # create_template = "site_admin/admin_add.html"
+    create_template = "site_admin/model/admin_create.html"
     # edit_template = "site_admin/admin_detail.html"
     can_set_page_size = True
     site_footer = "Power by Robin.X.Yuan 2019 - 2020".upper()
     can_view_details = True
     can_export = True
     export_types = ['csv', 'xls', 'df']
-    page_size = 2
+    page_size = 20
     details_modal = True
 
     column_formatters = {

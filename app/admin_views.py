@@ -1,7 +1,10 @@
 from datetime import datetime
 
+from wtforms.validators import DataRequired
 from flask_admin import expose
 from flask_admin.contrib.sqla import ModelView
+from flask_admin.contrib.sqla.validators import ItemsRequired
+from flask_admin.form import rules
 
 from . import admin, db
 from .base_admin_views import CustomBaseView
@@ -16,7 +19,32 @@ from app.auth.models import User, Role
 class UserAdminView(CustomBaseView):
 
     column_list = ['id', 'email', 'username', 'join_time']
-    column_details_exclude_list = ['password', 'create_time']
+    column_details_exclude_list = ['password', 'avatar_hash']
+    column_editable_list = ['email', 'username']
+    column_searchable_list = ['email', 'username']
+    column_sortable_list = ['id', 'join_time']
+    column_default_sort = 'id'
+
+    form_excluded_columns = ['password_hash', 'avatar_hash']
+    form_rules = [
+        rules.FieldSet(
+            ('email', 'username', 'name'), 'Basic Informations',
+        ),
+        'about_me',
+        'location',
+        rules.FieldSet(
+            ('role', ), 'Roles',
+        ),
+        'is_active',
+    ]
+    form_widget_args = {
+        'is_active': {
+            'column_class': 'form-check',
+            'class': 'form-check-input',
+            'label_class': 'form-check-label',
+        }
+    }
+
 
 admin.add_view(UserAdminView(
             User, db.session, name="User", endpoint="user",
@@ -36,12 +64,38 @@ admin.add_view(RoleAdminView(
 class CategoryAdminView(CustomBaseView):
 
     column_list = ['id', 'name', 'level', 'create_time']
-    column_editable_list = ['name', ]
+    column_editable_list = ['name']
     column_sortable_list = ['name', 'create_time']
     column_default_sort = 'id'
-    column_details_exclude_list = ['create_time']
     column_filters = ['name']
-    column_searchable_list = ['name', ]
+    column_searchable_list = ['name']
+
+    form_columns = ['name', 'level', 'parent', 'posts', 'is_nav']
+    form_excluded_columns = ['create_time']
+    form_args = {
+        'name': {
+            'validators': [DataRequired()],
+        },
+    }
+    form_rules = [
+        rules.FieldSet(
+            ('name', ), 'Name',
+        ),
+        rules.FieldSet(
+            ('parent', 'level'), 'Classification',
+        ),
+        rules.FieldSet(
+            ('posts', ), 'Inclusion',
+        ),
+        'is_nav'
+    ]
+    form_widget_args = {
+        'is_nav': {
+            'column_class': 'form-check',
+            'class': 'form-check-input',
+            'label_class': 'form-check-label',
+        }
+    }
 
 admin.add_view(CategoryAdminView(
             Category, db.session, name="Category", endpoint="category",

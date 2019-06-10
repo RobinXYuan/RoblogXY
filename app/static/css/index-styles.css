@@ -1,0 +1,67 @@
+.self-intro {
+    display: flex;
+}
+
+.self-intro-basics {
+    flex: 1;
+    max-width: 30em;
+    align-content: center;
+}
+
+.self-intro-basics > * {
+    margin: auto;
+}
+
+.self-intro-img {
+    background-image: url('../images/self.jpg');
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    height: 200px;
+    width: 200px;
+    border-radius: 50%;
+    border: 10px #ffc125 solid;
+    margin-bottom: 2em;
+}
+
+.self-intro-message {
+    align-content: center;
+}
+
+.self-intro-message > * {
+    margin: auto;
+}
+
+.self-intro-message table tbody tr td:first-child {
+    width: 6.5em;
+}
+
+.self-intro-about {
+    max-width: 40em;
+    padding-top: 10px;
+
+}
+
+.self-intro-about p {
+    text-align: justify;
+    font-size: 0.9em;
+}
+
+
+@media (max-width: 768px) {
+    .self-intro-about {
+        width: 25em;
+        padding-top: 30px;
+    }
+}
+
+@media (max-width: 576px) {
+    .self-intro {
+        display: block;
+    }
+    .self-intro-about {
+        width: 20em;
+        padding-top: 10px;
+        text-justify: distribute-all-lines;
+    }
+}

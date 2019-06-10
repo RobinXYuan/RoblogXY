@@ -41,6 +41,10 @@ def create_app(config_name):
     moment.init_app(app)
     db.init_app(app)
 
+    # @login_manager.user_loader
+    # def load_user(user_id):
+    #     return None
+
     from .auth import auth as auth_blueprint
     app.register_blueprint(auth_blueprint, url_prefix="/auth")
 

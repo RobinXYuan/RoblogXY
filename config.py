@@ -17,6 +17,8 @@ class Config:
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     UPLOAD_PATH = os.path.join(BASEDIR, "uploads")
 
+    ROBLOGXY_CATEGORIES_PER_PAGE = 20
+
     @staticmethod
     def init_app(app):
         pass

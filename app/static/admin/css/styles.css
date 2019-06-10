@@ -102,6 +102,14 @@ table.filters tr td {
     width: 220px;
 }
 
+nav ol.breadcrumb {
+  background-color: whitesmoke;
+}
+
+.create-form .card {
+  margin: 1em 0;
+}
+
 /* 
 .table-option-bar .nav-item.dropdown .dropdown-toggle::after {
   width: 1rem;
