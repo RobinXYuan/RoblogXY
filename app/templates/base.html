@@ -36,7 +36,7 @@
                                 <div class="uk-navbar-dropdown-grid uk-child-width-1-{{ t+1 }}" uk-grid>
                                     <div>
                                         <ul class="uk-nav uk-navbar-dropdown-nav">
-                                            <li><a href="">查看全部目录 &raquo;</a></li>
+                                            <li><a href="{{ url_for('.posts') }}">查看全部目录 &raquo;</a></li>
                                         </ul>
                                     </div>
                                     {% for category in categories %}

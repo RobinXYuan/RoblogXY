@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="uk-section">
+        <div class="uk-container">
+            <div uk-grid>
+                <div class="uk-width-1-2@s uk-width-1-5@m">
+                    <ul class="uk-nav-default" uk-nav>
+                        <a class="uk-nav-header" href="{{ url_for('.posts') }}">全部</a>
+                        {% for category in cats %}
+                        <li class="uk-nav-header">{{ category.name }}</li>
+                            {% for child in category.children %}
+                                <li><a href="{{ url_for('.posts') }}?cat={{ child.id }}">{{ child.name }}</a></li>
+                            {% endfor %}
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="uk-width-1-2@s uk-width-4-5@m">
+                    {% if third_cats %}
+                    <ul class="uk-subnav uk-subnav-pill">
+                        {% if subcat_id %}
+                        <li>
+                            <a href="{{ url_for('.posts') }}?cat={{ cat_id }}">
+                                All
+                            </a>
+                        </li>
+                        {% else %}
+                        <li class="uk-active">
+                            <a>All</a>
+                        </li>
+                        {% endif %}
+                        {% for subcat in third_cats %}
+                        <li {% if subcat_id|int == subcat.id|int %}class="uk-active"{% endif %}>
+                            <a href="{{ url_for('.posts') }}?cat={{ cat_id }}&subcat={{ subcat.id }}">
+                                {{ subcat.name }}
+                            </a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    {% else %}
+                    <h3 class="uk-text-center uk-text-muted">无内容</h3>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

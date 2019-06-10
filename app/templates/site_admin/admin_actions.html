@@ -2,9 +2,9 @@
 
 {% macro dropdown(actions, btn_class='btn dropdown-toggle') -%}
     <a class="{{ btn_class }}" data-toggle="dropdown" href="javascript:void(0)">{{ _gettext('With selected') }}<b class="caret"></b></a>
-    <ul class="nav-item dropdown-menu">
+    <ul class="dropdown-menu">
         {% for p in actions %}
-        <a class="nav-link" href="javascript:void(0)" onclick="return modelActions.execute('{{ p[0] }}');">{{ _gettext(p[1]) }}</a>
+        <a class="dropdown-item" href="javascript:void(0)" onclick="return modelActions.execute('{{ p[0] }}');">{{ _gettext(p[1]) }}</a>
         {% endfor %}
     </ul>
 {% endmacro %}

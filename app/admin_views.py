@@ -70,7 +70,7 @@ class CategoryAdminView(CustomBaseView):
     column_filters = ['name']
     column_searchable_list = ['name']
 
-    form_columns = ['name', 'level', 'parent', 'posts', 'is_nav']
+    form_columns = ['name', 'level', 'parent', 'posts', 'is_nav', 'description']
     form_excluded_columns = ['create_time']
     form_args = {
         'name': {
@@ -79,8 +79,9 @@ class CategoryAdminView(CustomBaseView):
     }
     form_rules = [
         rules.FieldSet(
-            ('name', ), 'Name',
+            ('name', ), 'Information',
         ),
+        'description',
         rules.FieldSet(
             ('parent', 'level'), 'Classification',
         ),

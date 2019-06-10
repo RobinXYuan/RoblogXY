@@ -17,6 +17,7 @@ class Category(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), unique=True, index=True)
     level = db.Column(db.Enum(CategoryLevels))
+    description = db.Column(db.String(255))
     create_time = db.Column(db.DateTime(), default=datetime.utcnow)
 
     is_nav = db.Column(db.Boolean, default=False)

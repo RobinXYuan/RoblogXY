@@ -80,6 +80,8 @@ class User(UserMixin, db.Model):
 
     role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
 
+    messages = db.relationship('Message', backref='user', lazy="joined", cascade='all, delete-orphan')
+
     @property
     def password(self):
         raise AttributeError('Password is not a readable attribute')
@@ -139,3 +141,15 @@ class AnonymousUser(AnonymousUserMixin):
         return False
 
 login_manager.anonymous_user = AnonymousUser
+
+
+class Message(db.Model):
+    __tablename__ = 'messages'
+    id = db.Column(db.Integer, primary_key=True)
+    subject = db.Column(db.String(64))
+    message = db.Column(db.Text)
+
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+
+    def __repr__(self):
+        return f"<Message {self.subject} by {self.user.email}>"
