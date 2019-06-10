@@ -61,7 +61,7 @@ class Role(db.Model):
         self.permissions = 0
 
     def __repr__(self):
-        return '<Role {}>'.format(self.name)
+        return f'<Role {self.name}>'
 
 
 class User(UserMixin, db.Model):
