@@ -12,13 +12,13 @@
     {% endblock %}
 </head>
 <body>
-    <header class="uk-position-relative uk-preserve-color">
+    <header class="uk-position-relative">
         <div uk-sticky="animation: uk-animation-slide-top;
                         sel-target: .uk-navbar-container;
                         cls-active: uk-navbar-sticky;
                         cls-inactive: uk-navbar-transparent {% if is_index %}uk-light{% endif %};
                         top: 50">
-            <nav class="uk-navbar-container uk-navbar-transparent {% if is_index %}uk-light{% endif %}" uk-navbar="dropbar: true">
+            <nav class="uk-navbar-container uk-navbar-transparent {% if is_index %}uk-light{% endif %}" uk-navbar="dropbar:true">
                 <div class="uk-navbar-left nav-left-bar">
                     <ul class="uk-navbar-nav">
                         <li class="uk-navbar-item">
@@ -62,18 +62,13 @@
                     </ul>
                 </div>
                 <div class="uk-navbar-right nav-right-bar">
-                     <div class="uk-navbar-item">
-                        <form action="javascript:void(0)">
-                            <input class="uk-input uk-form-width-small" type="text" placeholder="Input">
-                            <button class="uk-button uk-button-default nav-button-search">
-                                <span uk-icon="icon: search"></span>
-                            </button>
-                        </form>
-                    </div>
                     {% if current_user.is_authenticated %}
                     <ul class="uk-navbar-nav">
                         <li>
                             <a href="#">{{ current_user.username }}</a>
+                        </li>
+                        <li>
+                            <a href="#">Log Out</a>
                         </li>
                     </ul>
                     {% else %}

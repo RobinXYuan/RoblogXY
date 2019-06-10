@@ -1,3 +1,11 @@
+main .uk-section-muted {
+    margin: 1em 0;
+}
+
+main .uk-section-muted:first-child {
+    margin-top: 0;
+}
+
 .self-intro {
     display: flex;
 }
@@ -47,6 +55,13 @@
     font-size: 0.9em;
 }
 
+.projects-section .container {
+    margin-bottom: 2em;
+}
+
+.prj-heading h3{
+    margin-top: 0;
+}
 
 @media (max-width: 768px) {
     .self-intro-about {
@@ -60,7 +75,8 @@
         display: block;
     }
     .self-intro-about {
-        width: 20em;
+        width: 28em;
+        text-align: center;
         padding-top: 10px;
         text-justify: distribute-all-lines;
     }
