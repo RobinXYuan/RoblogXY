@@ -1,48 +1,130 @@
 {% extends "base.html" %}
+{% import "main/_macros.html" as macros %}
+
+{% block styles %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/posts-styles.css') }}">
+{% endblock styles %}
 
 {% block content %}
-    <div class="uk-section">
-        <div class="uk-container">
-            <div uk-grid>
-                <div class="uk-width-1-2@s uk-width-1-5@m">
-                    <ul class="uk-nav-default" uk-nav>
-                        <a class="uk-nav-header" href="{{ url_for('.posts') }}">全部</a>
-                        {% for category in cats %}
-                        <li class="uk-nav-header">{{ category.name }}</li>
-                            {% for child in category.children %}
-                                <li><a href="{{ url_for('.posts') }}?cat={{ child.id }}">{{ child.name }}</a></li>
-                            {% endfor %}
-                        </li>
+<div class="uk-section">
+    <div class="uk-container">
+        <div uk-grid>
+            <div class="uk-width-1-2@s uk-width-1-5@m">
+                <ul class="uk-nav-default" uk-nav>
+                    <a class="uk-nav-header" href="{{ url_for('.posts', page=1) }}">全部</a>
+                    {% for category in cats %}
+                    <li class="uk-nav-header">{{ category.name }}</li>
+                        {% for child in category.children %}
+                            <li><a href="{{ url_for('.posts', cat=child.id, page=1) }}">{{ child.name }}</a></li>
                         {% endfor %}
-                    </ul>
-                </div>
-                <div class="uk-width-1-2@s uk-width-4-5@m">
-                    {% if third_cats %}
-                    <ul class="uk-subnav uk-subnav-pill">
-                        {% if subcat_id %}
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="uk-width-1-2@s uk-width-4-5@m">
+                {% if cat %}
+                    <ul class="uk-breadcrumb">
+                        <li><span>{{ cat.parent.name|upper }}</span></li>
+                        {% if subcat %}
                         <li>
-                            <a href="{{ url_for('.posts') }}?cat={{ cat_id }}">
-                                All
+                            <a href="{{ url_for('.posts', cat=cat.id) }}">
+                                {{ cat.name|upper }}
                             </a>
                         </li>
+                        <li><span>{{ subcat.name|upper }}</span></li>
                         {% else %}
-                        <li class="uk-active">
-                            <a>All</a>
-                        </li>
+                        <li><span>{{ cat.name|upper }}</span></li>
                         {% endif %}
-                        {% for subcat in third_cats %}
-                        <li {% if subcat_id|int == subcat.id|int %}class="uk-active"{% endif %}>
-                            <a href="{{ url_for('.posts') }}?cat={{ cat_id }}&subcat={{ subcat.id }}">
-                                {{ subcat.name }}
-                            </a>
-                        </li>
-                        {% endfor %}
                     </ul>
+                {% endif %}
+                {% if third_cats %}
+                <ul class="uk-subnav uk-subnav-pill">
+                    {% if subcat.id %}
+                    <li>
+                        <a href="{{ url_for('.posts', cat=cat.id, page=1) }}">
+                            All
+                        </a>
+                    </li>
                     {% else %}
-                    <h3 class="uk-text-center uk-text-muted">无内容</h3>
+                    <li class="uk-active">
+                        <a>All</a>
+                    </li>
                     {% endif %}
+                    {% for sub in third_cats %}
+                    <li {% if subcat and subcat.id|int == sub.id|int %}class="uk-active"{% endif %}>
+                        <a href="{{ url_for('.posts', cat=cat.id, subcat=sub.id, page=1) }}">
+                            {{ sub.name }}
+                        </a>
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+                {% if posts %}
+                <div style="padding: 0;" class="uk-section">
+                    <div  class="uk-child-width-1-1 uk-grid-small" uk-grid>
+                        {% for post in posts %}
+                        <div>
+                            <div class="uk-card uk-card-default">
+                                <div class="uk-card-body">
+                                    <div class="uk-card-badge">
+                                        <span class="uk-label uk-label-primary">{{ post.category.name }}</span>
+                                        <span class="uk-text-warning">
+                                            {% if post.is_recommend %}
+                                                <i class="fa fa-fw fa-star"></i>
+                                            {% endif %}
+                                        </span>
+                                    </div>
+                                    <article class="uk-article">
+                                        <h6 class="uk-article-title">
+                                            {{ post.title|title }}
+                                        </h6>
+                                        <p class="uk-article-meta">
+                                            <span>
+                                                <i class="fa fa-fw fa-user"></i>
+                                                作者 {{ post.author.username }}
+                                            </span>
+                                            <span>
+                                                <i class="fa fa-fw fa-clock"></i>
+                                                创建于 {{ post.create_time.strftime('%Y-%m-%d') }}
+                                            </span>
+                                            <span>
+                                                <i class="fa fa-fw fa-pen-alt"></i>
+                                                编辑于 {{ post.update_time.strftime('%Y-%m-%d') }}
+                                            </span>
+                                            <span>
+                                                <i class="fa fa-fw fa-book-reader"></i>
+                                                阅读数 {{ post.read_times }}
+                                            </span>
+                                        </p>
+                                        <p>{{ post.content|truncate(300) }}</p>
+                                        <div class="uk-grid-small uk-child-width-auto" uk-grid>
+                                            <div>
+                                                <span class="uk-text-secondary">
+                                                    {{ post.comments.count() }} Comments
+                                                </span>
+                                            </div>
+                                            <div>
+                                                <a class="uk-button uk-button-text"
+                                                    href="{{ url_for('.post', post_id=post.id) }}">
+                                                    Read more
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </article>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
                 </div>
+                {{ macros.pagination_widget(pagination, '.posts', cat=cat.id, subcat=subcat.id) }}
+                {% else %}
+                    <h3 class="uk-text-center uk-text-muted">无内容</h3>
+                {% endif %}
             </div>
         </div>
     </div>
+</div>
 {% endblock content %}

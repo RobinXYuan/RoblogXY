@@ -1,5 +1,7 @@
 import enum
 from datetime import datetime
+from markdown import markdown
+import bleach
 
 from app import db
 from app.auth.models import User
@@ -39,6 +41,7 @@ class Post(db.Model):
     __tablename__ = "posts"
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(128))
+    content = db.Column(db.Text)
     content_html = db.Column(db.Text)
     create_time = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     update_time = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
@@ -47,14 +50,26 @@ class Post(db.Model):
     is_public = db.Column(db.Boolean, default=True)
     read_times = db.Column(db.Integer, default=0)
 
-    author = db.Column(db.Integer, db.ForeignKey('users.id'))
+    author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     category_id = db.Column(db.Integer, db.ForeignKey('categories.id'))
 
-    comments = db.relationship('Comment', backref="post")
-    images = db.relationship('PostImage', backref="post")
+    comments = db.relationship('Comment', backref="post", lazy='dynamic')
+    images = db.relationship('PostImage', backref="post", lazy='dynamic')
+
+    @staticmethod
+    def on_changed_content(target, value, oldvalue, initiator):
+        allowed_tags = ['a', 'abbr', 'acronym', 'b', 'blockquote', 'code',
+                        'em', 'i', 'li', 'ol', 'pre', 'strong', 'ul', 'h1',
+                        'h2', 'h3', 'h4', 'h5', 'h6', 'p']
+        target.content_html = bleach.linkify(bleach.clean(
+            markdown(value, output_format='html'),
+            tags=allowed_tags, strip=True
+        ))
 
     def __repr__(self):
         return f'<Post {self.title}>'
+
+db.event.listen(Post.content, 'set', Post.on_changed_content)
 
 
 class PostImage(db.Model):

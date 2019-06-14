@@ -5,6 +5,7 @@ verify_ssl = true
 
 [dev-packages]
 pytest = "*"
+faker = "*"
 
 [packages]
 flask = "*"
@@ -22,6 +23,9 @@ flask-admin = "*"
 pandas = "*"
 tablib = "*"
 flask-babelex = "*"
+bleach = "*"
+markdown = "*"
+pillow = "*"
 
 [requires]
 python_version = "3.7"

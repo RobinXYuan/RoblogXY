@@ -1,3 +1,5 @@
+import click
+
 from flask import Flask, render_template
 from flask_admin import Admin
 from flask_bootstrap import Bootstrap
@@ -44,6 +46,7 @@ def create_app(config_name):
     # @login_manager.user_loader
     # def load_user(user_id):
     #     return None
+    register_commands(app)
 
     from .auth import auth as auth_blueprint
     app.register_blueprint(auth_blueprint, url_prefix="/auth")
@@ -52,5 +55,14 @@ def create_app(config_name):
     app.register_blueprint(main_blueprint)
 
     return app
+
+def register_commands(app):
+    @app.cli.command()
+    @click.option('--count', default=100, help='Create fake posts, default count is 100')
+    def fakeposts(count):
+        from .fakes import fake_posts
+        fake_posts(count)
+        db.session.commit()
+
 
 from .admin_views import *

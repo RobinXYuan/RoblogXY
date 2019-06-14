@@ -81,6 +81,7 @@ class User(UserMixin, db.Model):
     role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
 
     messages = db.relationship('Message', backref='user', lazy="joined", cascade='all, delete-orphan')
+    posts = db.relationship('Post', backref='author', lazy="joined", cascade='all, delete-orphan')
 
     @property
     def password(self):

@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block styles %}
+{{ super() }}
+<style>
+    .uk-article-meta span {
+        margin-right: 15px;
+    }
+
+    .like-button {
+        border: 1px #f0506e solid;
+        color: #f0506e;
+    }
+
+    .like-button:hover {
+        border: 1px #ee395b solid;
+        color: #ee395b;
+    }
+</style>
+{% endblock styles %}
+
+{% block content %}
+<div class="uk-section">
+    <div class="uk-container">
+        <div uk-grid>
+            <div class="uk-width-1-2@s uk-width-4-5@m">
+                <div class="uk-container">
+                    <article class="uk-article">
+                        <h1 class="uk-article-title">{{ post.title|title }}</h1>
+                        <p class="uk-article-meta">
+                            <span>
+                                <i class="fa fa-fw fa-user"></i>
+                                作者 {{ post.author.username }}
+                            </span>
+                            <span>
+                                <i class="fa fa-fw fa-clock"></i>
+                                创建于 {{ post.create_time.strftime('%Y-%m-%d') }}
+                            </span>
+                            <span>
+                                <i class="fa fa-fw fa-pen-alt"></i>
+                                编辑于 {{ post.update_time.strftime('%Y-%m-%d') }}
+                            </span>
+                            <span>
+                                <i class="fa fa-fw fa-book-reader"></i>
+                                阅读数 {{ post.read_times }}
+                            </span>
+                        </p>
+                        <div class="uk-text-right">
+                            <button class="uk-button uk-button-default like-button">
+                                <i class="fa fa-fw fa-heart"></i>
+                                收藏
+                            </button>
+                        </div>
+                        <p>{{ post.content_html|safe }}</p>
+                    </article>
+                </div>
+            </div>
+            <div class="uk-width-1-2@s uk-width-1-5@m">
+                <div class="uk-section">
+                    <ul class="uk-nav uk-nav-primary">
+                        <li class="uk-nav-header">CATEGORY</li>
+                        <li>
+                            <a href="{{ url_for('.posts', cat=post.category.parent.parent.id, subcat=post.category.parent.id, page=1) }}">
+                                {{ post.category.name }}
+                            </a>
+                        </li>
+                        <li class="uk-nav-divider"></li>
+                        <li class="uk-nav-header">POPULAR POSTS</li>
+                        <li><a href=""></a></li>
+                        <li class="uk-nav-divider"></li>
+                        <li class="uk-nav-header">RECOMMEND POSTS</li>
+                        <li><a href=""></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}  

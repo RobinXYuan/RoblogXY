@@ -1,0 +1,11 @@
+.uk-article {
+    padding-top: 2em;
+}
+
+.uk-article .uk-article-title {
+    font-size: 1.8em;
+}
+
+.uk-article-meta>* {
+    margin-right: 15px;
+}

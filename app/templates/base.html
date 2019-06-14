@@ -7,18 +7,18 @@
     <title>{% block title %}RoblogXY{% endblock %}</title>
     {% block styles %}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/uikit.min.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/uikit-rtl.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='font-awesome.min.css') }}">
     {% endblock %}
 </head>
 <body>
-    <header class="uk-position-relative">
-        <div uk-sticky="animation: uk-animation-slide-top;
+    <header class="uk-preserve-color">
+        <div uk-sticky="animation:uk-animation-slide-top;
                         sel-target: .uk-navbar-container;
                         cls-active: uk-navbar-sticky;
                         cls-inactive: uk-navbar-transparent {% if is_index %}uk-light{% endif %};
-                        top: 50">
-            <nav class="uk-navbar-container uk-navbar-transparent {% if is_index %}uk-light{% endif %}" uk-navbar="dropbar:true">
+                        top: 10">
+            <nav class="uk-navbar-container uk-navbar-transparent {% if is_index %}uk-light{% endif %}" uk-navbar="dropbar:true;">
                 <div class="uk-navbar-left nav-left-bar">
                     <ul class="uk-navbar-nav">
                         <li class="uk-navbar-item">
@@ -36,17 +36,21 @@
                                 <div class="uk-navbar-dropdown-grid uk-child-width-1-{{ t+1 }}" uk-grid>
                                     <div>
                                         <ul class="uk-nav uk-navbar-dropdown-nav">
-                                            <li><a href="{{ url_for('.posts') }}">查看全部目录 &raquo;</a></li>
+                                            <li><a href="{{ url_for('.posts', page=1) }}">查看全部目录 &raquo;</a></li>
                                         </ul>
                                     </div>
                                     {% for category in categories %}
                                     <div>
-                                        <ul class="uk-nav uk-navbar-dropdown-nav">
+                                        <ul style="border: 0;" class="uk-nav uk-navbar-dropdown-nav">
                                             <li class="uk-nav-header">{{ category.name }}</li>
                                             {% if category.children and category.children.length != 0 %}
                                                 {% set children = category.children %}
                                                 {% for child in children %}
-                                                <li><a href="#">{{ child.name }}</a></li>
+                                                <li>
+                                                    <a href="{{ url_for('.posts', cat=child.id, page=1) }}">
+                                                        {{ child.name }}
+                                                    </a>
+                                                </li>
                                                 {% endfor %}
                                             {% endif %}
                                         </ul>
@@ -57,7 +61,7 @@
                             </div>
                         </li>
                         <li>
-                            <a href="#">Posts</a>
+                            <a href="{{ url_for('.posts', page=1) }}">Posts</a>
                         </li>
                     </ul>
                 </div>
@@ -98,7 +102,8 @@
     {% block scripts %}
     <script type="text/javascript" src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='js/uikit.min.js') }}"></script>    
-    <script type="text/javascript" src="{{ url_for('static', filename='js/uikit-icons.min.js') }}"></script>    
+    <script type="text/javascript" src="{{ url_for('static', filename='js/uikit-icons.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/font-awesome.min.js') }}"></script>   
     <script type="text/javascript" src="{{ url_for('static', filename='js/scripts.js') }}"></script>
     {% endblock %}  
 </body>
