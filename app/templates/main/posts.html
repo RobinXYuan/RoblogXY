@@ -7,16 +7,24 @@
 {% endblock styles %}
 
 {% block content %}
+{% set cat_id = cat.id or None %}
+{% set subcat_id = subcat.id or None %}
 <div class="uk-section">
     <div class="uk-container">
         <div uk-grid>
             <div class="uk-width-1-2@s uk-width-1-5@m">
                 <ul class="uk-nav-default" uk-nav>
-                    <a class="uk-nav-header" href="{{ url_for('.posts', page=1) }}">全部</a>
+                    <li>
+                        <a class="uk-nav-header" href="{{ url_for('.posts', page=1, cat=None, subcat=None) }}">全部</a>
+                    </li>
+                    <li>
+                        <a href="{{ url_for('.posts', page=1, cat=None, subcat=None, rmd=True) }}"
+                            class="uk-nav-header">全部推荐文章</a>
+                    </li>
                     {% for category in cats %}
                     <li class="uk-nav-header">{{ category.name }}</li>
                         {% for child in category.children %}
-                            <li><a href="{{ url_for('.posts', cat=child.id, page=1) }}">{{ child.name }}</a></li>
+                            <li><a href="{{ url_for('.posts', page=1, cat=child.id, subcat=None) }}">{{ child.name }}</a></li>
                         {% endfor %}
                     </li>
                     {% endfor %}
@@ -28,38 +36,77 @@
                         <li><span>{{ cat.parent.name|upper }}</span></li>
                         {% if subcat %}
                         <li>
-                            <a href="{{ url_for('.posts', cat=cat.id) }}">
+                            <a href="{{ url_for('.posts', page=1, cat=cat_id, subcat=None) }}">
                                 {{ cat.name|upper }}
                             </a>
                         </li>
                         <li><span>{{ subcat.name|upper }}</span></li>
                         {% else %}
                         <li><span>{{ cat.name|upper }}</span></li>
+                        {% if rmd %}
+                        <li><span>推荐文章</span></li>
+                        {% endif %}
                         {% endif %}
                     </ul>
                 {% endif %}
-                {% if third_cats %}
                 <ul class="uk-subnav uk-subnav-pill">
-                    {% if subcat.id %}
+                {% if third_cats %}
+                    {% if subcat_id or rmd %}
                     <li>
-                        <a href="{{ url_for('.posts', cat=cat.id, page=1) }}">
-                            All
+                        <a href="{{ url_for('.posts', page=1, cat=cat_id, subcat=None) }}">
+                            全部
                         </a>
                     </li>
-                    {% else %}
+                    {% else%}
                     <li class="uk-active">
-                        <a>All</a>
+                        <a>全部</a>
                     </li>
                     {% endif %}
                     {% for sub in third_cats %}
-                    <li {% if subcat and subcat.id|int == sub.id|int %}class="uk-active"{% endif %}>
-                        <a href="{{ url_for('.posts', cat=cat.id, subcat=sub.id, page=1) }}">
+                    <li {% if subcat and subcat_id|int == sub.id|int %}class="uk-active"{% endif %}>
+                        <a href="{{ url_for('.posts', page=1, cat=cat_id, subcat=sub.id) }}">
                             {{ sub.name }}
                         </a>
                     </li>
                     {% endfor %}
+                    {% endif %}
+                    <li {% if rmd %}class="uk-active"{% endif %}>
+                        <a href="{{ url_for('.posts', page=1, cat=cat_id, subcat=subcat_id, rmd=True) }}">
+                            推荐文章
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">排序<span uk-icon="icon:triangle-down"></span></a>
+                        <div uk-dropdown="mode:click;">
+                            <ul class="uk-nav uk-dropdown-nav">
+                                <li>
+                                    <a href="{{ url_for('.posts', page=1, cat=cat_id, subcat=subcat_id, read=True, desc=False, rmd=rmd) }}">
+                                        <i class="fa fa-fw fa-sort-amount-down"></i>
+                                        阅读量从高到低
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ url_for('.posts', page=1, cat=cat_id, subcat=subcat_id, read=True, desc=True, rmd=rmd) }}">
+                                        <i class="fa fa-fw fa-sort-amount-up"></i>
+                                        阅读量从低到高
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ url_for('.posts', page=1, cat=cat_id, subcat=subcat_id, time=True, desc=False, rmd=rmd) }}">
+                                        <i class="fa fa-fw fa-hourglass-start"></i>
+                                        创建时间从早到晚
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ url_for('.posts', page=1, cat=cat_id, subcat=subcat_id, rmd=rmd) }}">
+                                        <i class="fa fa-fw fa-hourglass-end"></i>
+                                        创建时间从晚到早
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
                 </ul>
-                {% endif %}
                 {% if posts %}
                 <div style="padding: 0;" class="uk-section">
                     <div  class="uk-child-width-1-1 uk-grid-small" uk-grid>
@@ -112,14 +159,18 @@
                                             </div>
                                         </div>
                                     </article>
-                                    
                                 </div>
                             </div>
                         </div>
                         {% endfor %}
                     </div>
                 </div>
-                {{ macros.pagination_widget(pagination, '.posts', cat=cat.id, subcat=subcat.id) }}
+                {{ macros.pagination_widget(pagination, '.posts', cat=cat_id, subcat=subcat_id, rmd=rmd, read=read, time=time, desc=desc) }}
+                <div class="uk-text-right" style="line-height: 1.5;padding-bottom:5px;">
+                    <a href="#" class="uk-flex-right uk-button uk-button-text" uk-scroll>
+                        Back to Top
+                    </a>
+                </div>
                 {% else %}
                     <h3 class="uk-text-center uk-text-muted">无内容</h3>
                 {% endif %}

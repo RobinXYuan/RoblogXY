@@ -60,10 +60,13 @@
                     <ul class="uk-nav uk-nav-primary">
                         <li class="uk-nav-header">CATEGORY</li>
                         <li>
-                            <a href="{{ url_for('.posts', cat=post.category.parent.parent.id, subcat=post.category.parent.id, page=1) }}">
+                            <a href="{{ url_for('.posts', cat=post.category.parent.id, subcat=post.category.id, page=1) }}">
                                 {{ post.category.name }}
                             </a>
                         </li>
+                        <li class="uk-nav-divider"></li>
+                        <li class="uk-nav-header">RELATED POSTS</li>
+                        <li><a href=""></a></li>
                         <li class="uk-nav-divider"></li>
                         <li class="uk-nav-header">POPULAR POSTS</li>
                         <li><a href=""></a></li>

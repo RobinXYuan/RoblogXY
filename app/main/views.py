@@ -32,8 +32,12 @@ class PostsView(BaseView):
     def dispatch_request(self):
         context = super().get_context()
 
-        cat_id = request.args.get('cat')
-        subcat_id = request.args.get('subcat')
+        cat_id = request.args.get('cat')            # 第二级目录
+        subcat_id = request.args.get('subcat')      # 第三级目录
+        rmd = request.args.get('rmd')               # 推荐文章
+        read = request.args.get('read')             # 阅读数量排序
+        time = request.args.get('time')             # 创建时间排序
+        desc = request.args.get('desc')             # 是否倒序
 
         cat = None
         subcat = None
@@ -50,8 +54,22 @@ class PostsView(BaseView):
             third_cats = []
             query = Post.query
 
+        if rmd:
+            query = query.filter(Post.is_recommend==True)
+
+        if time:
+            query = query.order_by(Post.create_time)
+        elif read:
+            if desc:
+                query = query.order_by(Post.read_times.desc())
+            else:
+                query = query.order_by(Post.read_times)
+        else:
+            query = query.order_by(Post.create_time.desc())
+        
+
         page = request.args.get('page', 1, type=int)
-        pagination = query.order_by(Post.create_time.desc()).paginate(
+        pagination = query.paginate(
             page, per_page=current_app.config['ROBLOGXY_POSTS_PER_PAGE'],
             error_out=False
         )
@@ -64,6 +82,10 @@ class PostsView(BaseView):
             'pagination': pagination,
             'cat': cat,
             'subcat': subcat,
+            'rmd': rmd,
+            'read': read,
+            'time': time,
+            'desc': desc
         })
 
         return self.render_template(context)
